@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        window.onload = function() {
+            // Detect when the user navigates back or forward
+            window.addEventListener('pageshow', function(event) {
+                // Reset form fields on page show (back or forward navigation)
+                document.getElementById('text').reset();
+                document.getElementById('uploadForm').reset();
+            });
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Sentiment Analysis</h1>
+    </header>
+    <br>
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('documentation') }}">Links</a>
+    </nav>
+    <br>
+    <div class="box">
+        <p id="no1">This project allows you to enter any sentence, paragraph or survey data and get back an accurate analysis of the sentiment behind the statement(s). 
+            Based on the pre-trained RoBERTa base NLP model.</p>
+    </div>
+    <div class = "box">
+    <form id="text" action="/submit/text" method="post"> <!--form 1-->
+        <label for="user_input"><h3>Analyze a sentence or a paragraph</h3></label>
+        <textarea name="user_input" id="user_input" class="textarea" placeholder="type here"></textarea>
+        <br>
+        <button type="submit" class="upload-button">Analyze</button>
+    </form>
+    </div>
+    <div class="box">
+    <form id="uploadForm" action="/submit/file" method="post" enctype="multipart/form-data"> <!--form 2-->
+        <label for="excelFile"><h3>Analyze Survey Data<br>
+            (Upload an excel file. Make sure that the columns include survey questions only)</h3></label>
+        <input type="file" id="excelFile" name="excelFile" class="file-input" accept=".xlsx, .xls" required>
+        <br>
+        <button type="submit" class="upload-button">Analyze</button>
+        <br>
+        <br>
+    </form>
+    </div>
+    <div class="box">
+        <form id="uploadForm" action="/dash" method="post" enctype="multipart/form-data">
+            <label for="excelFiledash"><h3>Dashboard for survey data<br>
+                (Upload an excel file. Make sure that the columns include survey questions only)</h3></label>
+            <input type="file" id="excelFiledash" name="excelFiledash" class="file-input" accept=".xlsx, .xls" required>
+            <br>
+            <button type="submit" class="upload-button">Create</button>
+        </form>
+    </div>
+</body>
+</html>

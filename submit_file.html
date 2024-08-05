@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results - Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Sentiment Analysis</h1>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('go_back') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('documentation') }}">Links</a>
+    </nav>
+
+    <h2>Results</h2>
+
+    <div class="box">
+        {% if final_ans or answers %}
+        <div class="result">
+            <h2>Survey participants were made to answer the following question(s): <br></h2>
+                <div id="question"><h2>{{ question }}</h2></div>
+        </div>
+        <a href="{{ url_for('data_viz') }}">
+            <button>Create a Dashboard</button>
+        </a>
+        <br>
+        <a href="{{ url_for('home') }}"><button>Home Page</button></a>
+        {% endif %}
+    </div>
+
+    <div class="box">
+        <form id="uploadForm" action="/dash" method="post" enctype="multipart/form-data">
+            <label for="excelFiledash"><h3>Dashboard for survey data<br>
+                (Upload an excel file. Make sure that the columns include survey questions only)</h3></label>
+            <input type="file" id="excelFiledash" name="excelFiledash" class="file-input" accept=".xlsx, .xls" required>
+            <br>
+            <button type="submit" class="upload-button">Create</button>
+        </form>
+    </div>
+
+    <div class="box">
+        {% if final_ans %}
+        <div class="result">
+            <h2>Consolidated Results</h2>
+        </div>
+        <br>
+        <div>
+            {% for q,a in final_ans %}
+                <h3>{{ q }}</h3>
+                    <table class="centre-table" id="answer_tab1">
+                        <thead>
+                            <tr>
+                                <th>sentiment</th>
+                                <th>score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item1, item2 in a.items() %}
+                                <tr>
+                                    <td>{{ item1 }}</td>
+                                    <td>{{ item2 }} %</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <br>
+            {% endfor %}
+        </div>
+        <br><br>
+        {% endif %}
+        <br>
+        {% if answers %}
+            <div class="result">
+                <h2>Individual Survey Outcome Analysis</h2>
+            </div>
+            <br>
+            {% for q,df in answers %}
+                <h2>{{ q }}</h2>
+                <div class="container">
+                    {{ df | safe }}
+                </div>
+                <br><br>
+            {% endfor %}
+        {% else %}
+        <div>
+            <p>empty dataframe</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

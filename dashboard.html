@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dash_style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js" charset="utf-8"></script>
+    
+</head>
+<body>
+    <header>
+        <h1>Sentiment Analysis</h1>
+    </header>
+
+    <nav>
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('documentation') }}">Links</a>
+    </nav>
+    <h2>Dashboard</h2>
+    <div class="box">
+        Area of Analysis:
+        <br>
+        {% for a in questions %}
+            {{ a }}
+            <br>
+        {% endfor %}
+    </div>
+    <div class="box" id="graph">
+        <div id="consol_pie"></div>
+        <script>
+            var consol_pie_data = {{ consol_pie_json | safe }};
+            Plotly.newPlot('consol_pie', consol_pie_data.data, consol_pie_data.layout);
+        </script>
+    </div>
+    <div class="box" id="graph">
+        <div id="indi_bar"></div>
+        <script>
+            var indi_bar_data = {{ indi_bar_json | safe }};
+            Plotly.newPlot('indi_bar', indi_bar_data.data, indi_bar_data.layout);
+        </script>
+    </div>
+</body>
+</html>
